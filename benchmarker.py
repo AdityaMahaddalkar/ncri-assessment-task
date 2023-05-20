@@ -1,8 +1,5 @@
-import json
-
-import requests
 import pandas as pd
-from pytest_benchmark.plugin import benchmark
+import requests
 
 BASE_URL = "http://127.0.0.1:8080/query"
 
@@ -22,6 +19,12 @@ def benchmark_multiple_queries(queries):
         assert prediction.status_code == 200
         predictions.append(prediction.json())
     return predictions
+
+
+def benchmark_all_queries_fail_on_batch(queries):
+    predictions = requests.post(BASE_URL + "/batch", json={"queryList": queries})
+    assert predictions.status_code == 500  # This will try to allocate huge amount of memory for 50K+ queries and is supposed to fail
+    return predictions.json()
 
 
 def benchmark_batch_queries(queries):
@@ -57,7 +60,19 @@ def test_multiple_queries_on_basic_endpoint(benchmark):
 def test_multiple_queries_on_batch_endpoint(benchmark):
     queries = dataset['review'][:50].values.tolist()
     sentiment = dataset['sentiment'][:50].values
-    predictions = benchmark.pedantic(benchmark_batch_queries, args=(queries,), rounds=50)
+    predictions = benchmark.pedantic(benchmark_batch_queries, args=(queries,), rounds=1)
+    count_correct = 0
+    for x, y in zip(sentiment, predictions):
+        if x == y['prediction']:
+            count_correct += 1
+    print(count_correct)
+    assert count_correct / len(queries) > 0.8
+
+
+def test_all_queries_on_batch_endpoint(benchmark):
+    queries = dataset['review'].values.tolist()
+    sentiment = dataset['sentiment'].values
+    predictions = benchmark.pedantic(benchmark_batch_queries, args=(queries,), rounds=1)
     count_correct = 0
     for x, y in zip(sentiment, predictions):
         if x == y['prediction']:
