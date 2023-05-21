@@ -32,12 +32,12 @@ To run the application:
 ## Benchmark Results
 
 * The following table represents benchmarking results
-* Please ignore the `fast` model results as there are issues using the GPU model
 * Single query requests are ran 50 times for benchmark result
 * Multiple query requests, batch query requests and batch chunk query requests are ran 1 time for benchmark result
 * The benchmark results are tested on following environment `Processor	Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz, 2201 Mhz, 6 Core(s), 12 Logical Processor(s)`
+* All benchmark results are created by `pytest-benchmark` package
 * Although batch chunk query requests will have the most throughput in benchmark, our machine ran out of memory while executing batch chunk query requests
-
+* Please ignore the `fast` model results as there are issues using the GPU model
 
 | Name | Min (ms) | Max (ms) | Mean (ms) | StdDev (ms) | Median (ms) | IQR (ms) | Outliers | OPS | Rounds | Iterations |
 |---|---|---|---|---|---|---|---|---|---|---|
