@@ -6,8 +6,8 @@ BATCH_SIZE = 64
 
 app = Flask(__name__)
 
-tokenizer = AutoTokenizer.from_pretrained('google/mobilebert-uncased')
-model = AutoModelForSequenceClassification.from_pretrained('best-f1-imdb')
+tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
+model = AutoModelForSequenceClassification.from_pretrained('hateBERT')
 
 half_model = None
 if torch.cuda.is_available():
@@ -18,7 +18,6 @@ if torch.cuda.is_available():
 def query_unoptimized():
     query = request.json['query']
     app.logger.info(f'Received query = {query} on basic endpoint')
-    print(f'Received query = {query} on basic endpoint')
 
     encoding = tokenizer(query, return_tensors="pt", padding=True, truncation=True, max_length=128)
     prediction = "positive" if model(**encoding).logits.argmax(-1).item() == 1 else "negative"
@@ -33,7 +32,6 @@ def query_batch():
     queries = request.json['queryList']
 
     app.logger.info(f'Received queryList with length = {len(queries)} on batch endpoint')
-    print(f'Received queryList with length = {len(queries)} on batch endpoint')
 
     def chunks(lst, n):
         for i in range(0, len(lst), n):
@@ -48,7 +46,6 @@ def query_batch():
                                 model(**encodings).logits.argmax(-1).tolist()))
         predictions.extend(_predictions)
         app.logger.info(f'Total predictions completed = {len(predictions)}')
-        print(f'Total predictions completed = {len(predictions)}')
 
     query_prediction_map = list(map(lambda x: {"query": x[0], "prediction": x[1]}, zip(queries, predictions)))
     return query_prediction_map
@@ -64,7 +61,6 @@ def query_fast():
     query = request.json['query']
 
     app.logger.info(f'Received query = {query} on fast endpoint')
-    print(f'Received query = {query} on fast endpoint')
 
     encoding = tokenizer(query, return_tensors="pt", padding=True, truncation=True, max_length=128)
     prediction = "positive" if half_model(**encoding).logits.argmax(-1).item() == 1 else "negative"
@@ -84,7 +80,6 @@ def query_fast_batch():
     queries = request.json['queryList']
 
     app.logger.info(f'Received queryList with length = {len(queries)} on fast batch endpoint')
-    print(f'Received queryList with length = {len(queries)} on fast batch endpoint')
 
     def chunks(lst, n):
         for i in range(0, len(lst), n):
@@ -99,7 +94,6 @@ def query_fast_batch():
                                 half_model(**encodings).logits.argmax(-1).tolist()))
         predictions.extend(_predictions)
         app.logger.info(f'Total predictions completed = {len(predictions)}')
-        print(f'Total predictions completed = {len(predictions)}')
 
     query_prediction_map = list(map(lambda x: {"query": x[0], "prediction": x[1]}, zip(queries, predictions)))
     return query_prediction_map

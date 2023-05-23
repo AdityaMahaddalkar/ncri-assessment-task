@@ -94,16 +94,16 @@ def test_all_queries_on_batch_endpoint(benchmark):
     predictions = benchmark.pedantic(benchmark_batch_queries, args=(queries,), rounds=1)
 
 
-def test_all_queries_on_parallel_batch_endpoint(benchmark):
-    queries = dataset['review'][:10000].values.tolist()
-
-    def chunks(lst, n):
-        for i in range(0, len(lst), n):
-            yield lst[i:i + n]
-
-    query_chunks = chunks(queries, 1000)
-
-    predictions = benchmark.pedantic(benchmark_multiple_query_chunks_with_batch, args=(query_chunks,), rounds=1)
+# def test_all_queries_on_parallel_batch_endpoint(benchmark):
+#     queries = dataset['review'][:10000].values.tolist()
+#
+#     def chunks(lst, n):
+#         for i in range(0, len(lst), n):
+#             yield lst[i:i + n]
+#
+#     query_chunks = chunks(queries, 1000)
+#
+#     predictions = benchmark.pedantic(benchmark_multiple_query_chunks_with_batch, args=(query_chunks,), rounds=1)
 
 
 def test_single_on_fast_model(benchmark):

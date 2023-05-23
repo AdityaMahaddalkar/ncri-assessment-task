@@ -39,17 +39,16 @@ To run the application:
 * Although batch chunk query requests will have the most throughput in benchmark, our machine ran out of memory while executing batch chunk query requests
 * Please ignore the `fast` model results as there are issues using the GPU model
 
-| Name | Min (ms) | Max (ms) | Mean (ms) | StdDev (ms) | Median (ms) | IQR (ms) | Outliers | OPS | Rounds | Iterations |
-|---|---|---|---|---|---|---|---|---|---|---|
-| test_multiple_on_fast_model_batch | 6.4658 | 6.4658 | 6.4658 | 0.0000 | 6.4658 | 0.0000 | 0;0 | 154.6599 | 1 | 1 |
-| test_positive_query | 154.5341 | 379.3727 | 230.5865 | 28.8366 | 224.0515 | 19.4085 | 5;3 | 4.3368 | 50 | 1 |
-| test_negative_query | 212.9715 | 278.4207 | 226.8281 | 13.3725 | 223.3805 | 12.8005 | 7;3 | 4.4086 | 50 | 1 |
-| test_single_on_fast_model | 242.9477 | 318.8451 | 265.8581 | 15.5806 | 261.7750 | 21.4734 | 13;1 | 3.7614 | 50 | 1 |
-| test_multiple_queries_on_batch_endpoint | 8,904.6128 | 8,904.6128 | 8,904.6128 | 0.0000 | 8,904.6128 | 0.0000 | 0;0 | 0.1123 | 1 | 1 |
-| test_multiple_queries_on_basic_endpoint | 12,541.1664 | 12,541.1664 | 12,541.1664 | 0.0000 | 12,541.1664 | 0.0000 | 0;0 | 0.0797 | 1 | 1 |
-| test_all_queries_on_batch_endpoint | 799,223.0441 | 799,223.0441 | 799,223.0441 | 0.0000 | 799,223.0441 | 0.0000 | 0;0 | 0.0013 | 1 | 1 |
-| test_all_queries_on_basic_endpoint | 1,846,147.4380 | 1,846,147.4380 | 1,846,147.4380 | 0.0000 | 1,846,147.4380 | 0.0000 | 0;0 | 0.0005 | 1 | 1 |
-
+| Name (time in ms)                       | Min            | Max            | Mean           | StdDev   | Median         | IQR      | Outliers | OPS     | Rounds | Iterations |
+|-----------------------------------------|----------------|----------------|----------------|----------|----------------|----------|----------|---------|--------|------------|
+| test_multiple_on_fast_model_batch       | 16.8111        | 16.8111        | 16.8111        | 0.0000   | 16.8111        | 0.0000   | 0;0      | 59.4845 | 1      | 1          |
+| test_single_on_fast_model               | 142.5689       | 245.5728       | 166.4766       | 15.9205  | 162.3542       | 9.0740   | 4;4      | 6.0069  | 50     | 1          |
+| test_positive_query                     | 308.9990       | 1,247.8521     | 431.1538       | 165.9252 | 370.4056       | 129.2990 | 6;4      | 2.3194  | 50     | 1          |
+| test_negative_query                     | 315.1848       | 989.8919       | 488.3924       | 156.4563 | 461.3186       | 168.1544 | 9;4      | 2.0475  | 50     | 1          |
+| test_multiple_queries_on_basic_endpoint | 20,141.0605    | 20,141.0605    | 20,141.0605    | 0.0000   | 20,141.0605    | 0.0000   | 0;0      | 0.0496  | 1      | 1          |
+| test_multiple_queries_on_batch_endpoint | 23,525.1823    | 23,525.1823    | 23,525.1823    | 0.0000   | 23,525.1823    | 0.0000   | 0;0      | 0.0425  | 1      | 1          |
+| test_all_queries_on_basic_endpoint      | 1,623,763.8486 | 1,623,763.8486 | 1,623,763.8486 | 0.0000   | 1,623,763.8486 | 0.0000   | 0;0      | 0.0006  | 1      | 1          |
+| test_all_queries_on_batch_endpoint      | 1,907,739.6262 | 1,907,739.6262 | 1,907,739.6262 | 0.0000   | 1,907,739.6262 | 0.0000   | 0;0      | 0.0005  | 1      | 1          |
 
 ## What changes did I do to achieve higher throughput
 
